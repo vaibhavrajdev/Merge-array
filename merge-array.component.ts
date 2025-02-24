@@ -1,24 +1,43 @@
-import { Observable, from } from 'rxjs';
-import { mergeMap, toArray } from 'rxjs/operators';
 
 export class MergeArrayComponent {
-  callApiMethod(arr1: any, arr2: any) {
-    this.mergeArrays(arr1, arr2).subscribe({
-      next: (result) => console.log('merged and sorted', result),
-      error: (err) => console.error('error:', err),
-      complete: () => console.log('merged'),
-    });
+    callApiMethod(arr1: number[], arr2: number[]) {
+      const mergedArray = this.mergeAndSortArrays(arr1, arr2);
+      console.log('merged and sorted', mergedArray);
+      console.log('merged');
+    }
+  
+    mergeAndSortArrays(arr1: number[], arr2: number[]): number[] {
+      const mergedArr = [...arr1, ...arr2];
+      return this.quickSort(mergedArr);
+    }
+  
+    quickSort(arr: number[]): number[] {
+      if (arr.length <= 1) {
+        return arr;
+      }
+  
+      const point = arr[Math.floor(arr.length / 2)];
+      const left: number[] = [];
+      const right: number[] = [];
+      const equal: number[] = [];
+  
+      for (let num of arr) {
+        if (num < point) {
+          left.push(num);
+        } else if (num > point) {
+          right.push(num);
+        } else {
+          equal.push(num);
+        }
+      }
+  
+      return [...this.quickSort(left), ...equal, ...this.quickSort(right)];
+    }
   }
-
-  mergeArrays(arr1: number[], arr2: number[]): Observable<number[]> {
-    return from([...arr1, ...arr2]).pipe(
-      toArray(),
-      mergeMap((mergedArr) => from([mergedArr.sort((a, b) => a - b)]))
-    );
-  }
-}
-const arrData1 = [12, 3, 9, 1];
-const arrData2 = [7, 10, 2, 8];
-
-const apicall = new MergeArrayComponent();
-apicall.callApiMethod(arrData1, arrData2);
+  
+  const arrData1 = [12, 3, 9, 1];
+  const arrData2 = [7, 10, 2, 8];
+  
+  const apicall = new MergeArrayComponent();
+  apicall.callApiMethod(arrData1, arrData2);
+  
