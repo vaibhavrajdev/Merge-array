@@ -1,7 +1,7 @@
 import { Observable, from } from 'rxjs';
 import { mergeMap, toArray } from 'rxjs/operators';
 
-export class AppComponent {
+export class MergeArrayComponent {
   callApiMethod(arr1: any, arr2: any) {
     this.mergeArrays(arr1, arr2).subscribe({
       next: (result) => console.log('merged and sorted', result),
@@ -20,5 +20,5 @@ export class AppComponent {
 const arrData1 = [12, 3, 9, 1];
 const arrData2 = [7, 10, 2, 8];
 
-const apicall = new AppComponent();
+const apicall = new MergeArrayComponent();
 apicall.callApiMethod(arrData1, arrData2);
